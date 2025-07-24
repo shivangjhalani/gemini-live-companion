@@ -1,5 +1,12 @@
 import { contextBridge } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
+import { contextIsolated } from 'process'
+
+if (!contextIsolated) {
+  throw new Error('Context isolation is not enabled. Please enable it in your Electron app.')
+}
+
+contextBridge.exposeInMainWorld('electron', electronAPI)
 
 // Custom APIs for renderer
 const api = {}
